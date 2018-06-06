@@ -16,8 +16,21 @@ app.use(bodyParser.json({
     type: 'application/*'
 }))
 
-router.get('/webooks', (req, res) => {
+router.post('/bitbucket', (req, res) => {
+    var body = req.body
+    var commits = body.push.changes//[0].new.name
     
+    for(var i = 0; i < commits.length; i++) {
+        var commit = commits[i]
+        console.log(commit.new.name === 'master')
+        if (!commit || !commit.new || commit.new.name !== 'master') {
+            return res.status(200).send('No')
+        }
+
+    }
+
+    return res.status(200).send('Yes')
+
 })
 
 app.use(router)
