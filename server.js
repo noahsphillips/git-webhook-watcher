@@ -48,9 +48,7 @@ router.post('/bitbucket', async (req, res) => {
         res.status(500).json({error})
     }
 
-    console.log(result)
-
-    return res.status(200).send(branches)
+    return res.status(200).send()
 
 })
 

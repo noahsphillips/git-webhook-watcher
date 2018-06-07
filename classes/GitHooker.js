@@ -82,11 +82,8 @@ module.exports = class GitHooker {
             var repo = this.currentRepo
             var branches = this.branches
             var promises = []
-            console.log('dir', __dirname)
             for (var branch in branches) {
-                promises.push(git(path.join(__dirname, '../')).status((res, err) => {
-                    console.log(res, err)
-                }))
+                promises.push(git(path.join(__dirname, '../')).status((res, err) => {if (err) {console.log(err)}}))
             }
 
             try {
@@ -95,8 +92,6 @@ module.exports = class GitHooker {
                 console.log(error)
                 rej(error)
             }
-
-            console.log(results)
 
             res(true)
         })
