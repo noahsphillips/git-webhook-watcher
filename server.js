@@ -16,20 +16,41 @@ app.use(bodyParser.json({
     type: 'application/*'
 }))
 
-router.post('/bitbucket', (req, res) => {
-    var body = req.body
-    var commits = body.push.changes//[0].new.name
-    
-    for(var i = 0; i < commits.length; i++) {
-        var commit = commits[i]
-        console.log(commit.new.name === 'master')
-        if (!commit || !commit.new || commit.new.name !== 'master') {
-            return res.status(200).send('No')
-        }
+router.post('/bitbucket', async (req, res) => {
 
+    var hooker = new GitHooker()
+    var body = req.body
+
+    try {
+        await hooker.fetchConfig()
+    } catch (error) {
+        console.log(error)
+        return res.json({error})
     }
 
-    return res.status(200).send('Yes')
+    var theRepo = hooker.fetchRepo(body.repository.links.html.href)
+
+    if (!theRepo) {
+        console.log('no repo exists.')
+        return res.status(404).json({message:'This repo does not exist in config.json'})
+    }
+
+    var branches = hooker.setBranches(body.push.changes)
+
+    if (!branches) {
+        return res.send('No valid branches in the commits.')
+    }
+
+    try {
+        var result = await hooker.gitPull()
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({error})
+    }
+
+    console.log(result)
+
+    return res.status(200).send(branches)
 
 })
 

@@ -11,6 +11,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "lodash": "^4.17.10",
     "simple-git": "^1.95.1",
     "sticky-cluster": "^0.3.5"
   },
