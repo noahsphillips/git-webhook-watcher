@@ -3,7 +3,7 @@ const express = require('express'),
     router = express.Router(),
     bodyParser = require('body-parser'),
     port = process.env.PORT || 3000,
-    git = require('simple-git')
+    GitHooker = require('./classes/GitHooker')
 
 app.use(bodyParser.urlencoded({
     limit: '500mb',

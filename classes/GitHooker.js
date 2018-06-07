@@ -1,5 +1,6 @@
 'use strict'
-import fs from 'fs'
+const fs = require('fs'),
+    git = require('simple-git')
 
 module.exports = class GitHooker {
 
@@ -20,7 +21,7 @@ module.exports = class GitHooker {
     }
 
     fetchBranches() {
-        
+
     }
 
 }
